@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_notes_app/ui/pages/auth/login.dart';
-
 import 'ui/pages/home.dart';
 
 void main() => runApp(MyApp());
@@ -31,7 +29,7 @@ class MyApp extends StatelessWidget {
           ),
         )
       ),
-      home: LoginPage(),
+      home: HomePage(),
     );
   }
 }
