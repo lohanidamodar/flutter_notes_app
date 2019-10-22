@@ -1,4 +1,4 @@
-package com.example.flutter_notes_app
+package com.popupbits.flutter_notes_app
 
 import android.os.Bundle
 

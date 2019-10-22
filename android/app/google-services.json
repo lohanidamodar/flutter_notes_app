@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "478780800008",
+    "firebase_url": "https://flutter-notes-app-343ca.firebaseio.com",
+    "project_id": "flutter-notes-app-343ca",
+    "storage_bucket": "flutter-notes-app-343ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478780800008:android:cc22bbb7b5bb9fc447e5bd",
+        "android_client_info": {
+          "package_name": "com.popupbits.flutter_notes_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "478780800008-sopt36pimkjrqcs78iuu802its6d0d2o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.popupbits.flutter_notes_app",
+            "certificate_hash": "67a7d9ac3de2b5587fd9cd8d0879becff84e60bc"
+          }
+        },
+        {
+          "client_id": "478780800008-6sjruh3pt4u87giujd233c7emopeiu34.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0oo8ZzFYw9C3QfF3y6cJYUYUvKU_e8ME"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "478780800008-6sjruh3pt4u87giujd233c7emopeiu34.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
