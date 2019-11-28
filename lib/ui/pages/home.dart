@@ -8,9 +8,7 @@ import 'auth/login.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      builder: (_) => UserRepository.instance(),
-      child: Consumer(
+    return Consumer(
         builder: (context, UserRepository user, _) {
           switch (user.status) {
             case Status.Uninitialized:
@@ -22,7 +20,6 @@ class HomePage extends StatelessWidget {
               return NotesHomePage();
           }
         },
-      ),
-    );
+      );
   }
 }
