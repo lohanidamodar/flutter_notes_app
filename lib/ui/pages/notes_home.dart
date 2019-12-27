@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_notes_app/model/note.dart';
 import 'package:flutter_notes_app/model/user_repository.dart';
 import 'package:flutter_notes_app/service/db_service.dart';
+import 'package:flutter_notes_app/ui/widgets/note_item.dart';
 import 'package:provider/provider.dart';
 
 class NotesHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade300,
       appBar: AppBar(
         title: Text("Flutter Notes"),
         actions: <Widget>[
@@ -27,9 +29,19 @@ class NotesHomePage extends StatelessWidget {
           
           return ListView.builder(
             itemCount: snapshot.data.length,
-            itemBuilder: (context, index) => ListTile(
-              title: Text(snapshot.data[index].title),
-            ),
+            itemBuilder: (context, index) {
+              return NoteItem(
+                note: snapshot.data[index],
+                onDelete: (note) async {
+                  if(await _confirmDelete(context)) {
+                    notesDb.removeItem(note.id);
+                  }
+                },
+                onEdit: (note){
+
+                },
+                );
+            } 
           );
         },
       ),
@@ -37,6 +49,26 @@ class NotesHomePage extends StatelessWidget {
         child: Icon(Icons.add),
         onPressed: () => Navigator.pushNamed(context, 'add_note'),
       ),
+    );
+  }
+
+  Future<bool> _confirmDelete(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Confirm Delete"),
+        content: Text("Are you sure you want to delete?"),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("No"),
+            onPressed: () => Navigator.pop(context,false),
+          ),
+          FlatButton(
+            child: Text("Yes"),
+            onPressed: () => Navigator.pop(context,true),
+          ),
+        ],
+      )
     );
   }
 
