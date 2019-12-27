@@ -5,6 +5,9 @@ import 'package:flutter_notes_app/service/db_service.dart';
 import 'package:provider/provider.dart';
 
 class AddNotePage extends StatefulWidget {
+  final Note note;
+
+  const AddNotePage({Key key, this.note}) : super(key: key);
   @override
   _AddNotePageState createState() => _AddNotePageState();
 }
@@ -14,13 +17,15 @@ class _AddNotePageState extends State<AddNotePage> {
   TextEditingController _descriptionController;
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   FocusNode _descriptionNode;
-
+  bool _editMode;
+  bool _processing;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _titleController = TextEditingController();
-    _descriptionController = TextEditingController();
+    _processing=false;
+    _editMode = widget.note != null;
+    _titleController = TextEditingController( text:  _editMode ? widget.note.title : null);
+    _descriptionController = TextEditingController(text:  _editMode ? widget.note.description : null);
     _descriptionNode = FocusNode();
   }
 
@@ -57,8 +62,11 @@ class _AddNotePageState extends State<AddNotePage> {
             ),
             const SizedBox(height: 10.0),
             RaisedButton(
-              child: Text("Save"),
-              onPressed: ()async {
+              child: _processing ? CircularProgressIndicator() : Text("Save"),
+              onPressed: _processing ? null  : ()async {
+                setState(() {
+                  _processing = true;
+                });
                 if(_titleController.text.isEmpty) {
                   _key.currentState.showSnackBar(SnackBar(
                     content: Text("Title is required."),
@@ -66,12 +74,20 @@ class _AddNotePageState extends State<AddNotePage> {
                   return;
                 }
                 Note note = Note(
+                  id: _editMode ? widget.note.id : null,
                   title: _titleController.text,
                   description: _descriptionController.text,
                   createdAt: DateTime.now(),
                   userId: Provider.of<UserRepository>(context).user.uid,
                 );
-                await notesDb.createItem(note);
+                if(_editMode) {
+                  await notesDb.updateItem(note);
+                }else {
+                  await notesDb.createItem(note);
+                }
+                setState(() {
+                  _processing = false;
+                });
                 /* _key.currentState.showSnackBar(SnackBar(
                   content: Text("Notes saved successfully")
                 )); */

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_notes_app/model/note.dart';
 import 'package:flutter_notes_app/model/user_repository.dart';
 import 'package:flutter_notes_app/service/db_service.dart';
+import 'package:flutter_notes_app/ui/pages/add_note.dart';
 import 'package:flutter_notes_app/ui/widgets/note_item.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +39,9 @@ class NotesHomePage extends StatelessWidget {
                   }
                 },
                 onEdit: (note){
-
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (_) => AddNotePage(note: note,)
+                  ));
                 },
                 );
             } 
