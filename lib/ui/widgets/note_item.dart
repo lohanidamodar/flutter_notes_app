@@ -6,7 +6,8 @@ class NoteItem extends StatelessWidget {
   final Note note;
   final Function(Note) onEdit;
   final Function(Note) onDelete;
-  const NoteItem({Key key, @required this.note, @required this.onEdit, @required this.onDelete}) : super(key: key);
+  final Function(Note) onTap;
+  const NoteItem({Key key, @required this.note, @required this.onEdit, @required this.onDelete, @required this.onTap}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,6 +33,7 @@ class NoteItem extends StatelessWidget {
       ),
   ],
         child: ListTile(
+          onTap: () => onTap(note),
           title: Text(note.title),
         ),
       ),

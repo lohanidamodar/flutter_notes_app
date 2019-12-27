@@ -3,6 +3,7 @@ import 'package:flutter_notes_app/model/note.dart';
 import 'package:flutter_notes_app/model/user_repository.dart';
 import 'package:flutter_notes_app/service/db_service.dart';
 import 'package:flutter_notes_app/ui/pages/add_note.dart';
+import 'package:flutter_notes_app/ui/pages/note_details.dart';
 import 'package:flutter_notes_app/ui/widgets/note_item.dart';
 import 'package:provider/provider.dart';
 
@@ -21,31 +22,42 @@ class NotesHomePage extends StatelessWidget {
         ],
       ),
       body: StreamBuilder(
-        stream: notesDb.streamList() ,
-        builder: (BuildContext context, AsyncSnapshot<List<Note>> snapshot){
-          if(snapshot.hasError) return Center(
-            child: Text("There was an error"),
-          );
-          if(!snapshot.hasData) return CircularProgressIndicator();
-          
+        stream: notesDb.streamList(),
+        builder: (BuildContext context, AsyncSnapshot<List<Note>> snapshot) {
+          if (snapshot.hasError)
+            return Center(
+              child: Text("There was an error"),
+            );
+          if (!snapshot.hasData) return CircularProgressIndicator();
+
           return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, index) {
-              return NoteItem(
-                note: snapshot.data[index],
-                onDelete: (note) async {
-                  if(await _confirmDelete(context)) {
-                    notesDb.removeItem(note.id);
-                  }
-                },
-                onEdit: (note){
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (_) => AddNotePage(note: note,)
-                  ));
-                },
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                return NoteItem(
+                  note: snapshot.data[index],
+                  onDelete: (note) async {
+                    if (await _confirmDelete(context)) {
+                      notesDb.removeItem(note.id);
+                    }
+                  },
+                  onTap: (note) => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => NoteDetailsPage(
+                          note: note,
+                        ),
+                      )),
+                  onEdit: (note) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => AddNotePage(
+                            note: note,
+                          ),
+                        ));
+                  },
                 );
-            } 
-          );
+              });
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -57,22 +69,20 @@ class NotesHomePage extends StatelessWidget {
 
   Future<bool> _confirmDelete(BuildContext context) async {
     return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Confirm Delete"),
-        content: Text("Are you sure you want to delete?"),
-        actions: <Widget>[
-          FlatButton(
-            child: Text("No"),
-            onPressed: () => Navigator.pop(context,false),
-          ),
-          FlatButton(
-            child: Text("Yes"),
-            onPressed: () => Navigator.pop(context,true),
-          ),
-        ],
-      )
-    );
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Confirm Delete"),
+              content: Text("Are you sure you want to delete?"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("No"),
+                  onPressed: () => Navigator.pop(context, false),
+                ),
+                FlatButton(
+                  child: Text("Yes"),
+                  onPressed: () => Navigator.pop(context, true),
+                ),
+              ],
+            ));
   }
-
 }
